@@ -989,6 +989,22 @@ function selectRegion(name){
   state.museumId = list.length ? list[0].id : null;
   renderRegionList(); renderMapRegions(); renderMarkers(); renderHead(); renderMuseumCard(); renderSummary();
   scrollChipIntoList();
+  scrollPageToMap();
+}
+
+/* при выборе региона плавно прокручиваем страницу так,
+   чтобы низ стики-хедера совпал с низом баннера (баннер полностью ушёл) */
+function scrollPageToMap(){
+  const header=$(".site-header");
+  const hero=$(".hero");
+  if(!hero || !header) return;
+  const headerH = header.offsetHeight || 0;
+  const heroBottomY = hero.getBoundingClientRect().bottom + window.scrollY;
+  const top = Math.max(0, heroBottomY - headerH);   /* низ хедера встанет на низ баннера */
+  const cur = window.scrollY;
+  /* прокручиваем только когда разница ощутимая
+     (прыжок к началу или вниз к карточке из глубины страницы) */
+  if (Math.abs(cur - top) > 80) window.scrollTo({top, behavior:"smooth"});
 }
 
 /* прокручиваем только сам список регионов, не страницу */

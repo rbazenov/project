@@ -331,7 +331,11 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
   .map-tools{width:100%;margin-left:0}
   .zoom{margin-left:auto}
 }
-</style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes pulseRing{0%{transform:scale(1);opacity:.6}80%{transform:scale(2.2);opacity:0}100%{transform:scale(2.2);opacity:0}}.fade-up{animation:fadeUp .32s ease both}.region-chip{transition:background .22s,color .22s,transform .14s}.marker.active circle.dot{transform-origin:center;transform-box:fill-box;animation:dotPulse 1.4s ease-in-out infinite alternate}
+ @keyframes dotPulse{from{r:9}to{r:11}}
+ .marker.active circle.ring{transform-origin:center;transform-box:fill-box;animation:pulseRing 1.6s ease-out infinite}
+ .marker.active{padding:2px}
+ .marker{transform-origin:center;transform-box:fill-box;transition:opacity .25s}.lb-dot{transition:background .2s,width .25s,border-radius .25s}</style>
 </head>
 <body>
 
@@ -641,6 +645,7 @@ function toView(lon,lat){
 }
 
 const $ = (s,r=document)=>r.querySelector(s);
+  function fade(el){ if(!el) return; el.classList.remove("fade-up"); void el.offsetWidth; el.classList.add("fade-up"); };
 const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 const fmt = n => n.toLocaleString("ru-RU").replace(/ /g," ");
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -692,6 +697,7 @@ function renderRegionList(){
   $$("#regionList .region-chip").forEach(el=>{
     el.addEventListener("click",()=>selectRegion(el.dataset.region));
   });
+  fade($("#regionList"));
 }
 
 function renderStatusList(){
@@ -1003,18 +1009,19 @@ function scrollChipIntoList(){
 function renderHead(){
   const r=regionByName[state.region];
   if(!r){ $("#regionOkrug").textContent="—"; $("#regionTitle").textContent="Выберите регион";
-          $("#regionSub").textContent="Нажмите на регион в списке или на карте"; return; }
+          $("#regionSub").textContent="Нажмите на регион в списке или на карте"; fade($("#regionOkrug")); fade($("#regionTitle")); fade($("#regionSub")); return; }
   $("#regionOkrug").textContent=r.okrug;
   $("#regionTitle").textContent=r.name;
   $("#regionSub").textContent=r.okrugFull+" · "+r.count+" "+plural(r.count,["музей","музея","музеев"]);
-}
+   fade($("#regionOkrug")); fade($("#regionTitle")); fade($("#regionSub"));
+  }
 
 function renderMuseumCard(){
   const card=$("#museumCard");
   const m=state.museumId?museums.find(x=>x.id===state.museumId):null;
   if(!m){ card.hidden=true; card.innerHTML=""; return; }
   const s=STATUS_META[m.status];
-  card.hidden=false;
+  card.hidden=false; fade(card);
   const photos=Array.from({length:PHOTOS_PER_MUSEUM},(_,i)=>
     '<button class="photo" type="button" data-photo="'+i+'" aria-label="Открыть фото '+(i+1)+'">'+
     '<img src="'+photoSrc(m,i)+'" alt="'+esc(m.name)+' — фото '+(i+1)+'" loading="lazy"></button>').join("");
@@ -1075,7 +1082,7 @@ function renderSummary(){
   const box=$("#regionSummary");
   const r=regionByName[state.region];
   if(!r){ box.hidden=true; return; }
-  box.hidden=false;
+  box.hidden=false; fade(box);
   const all=filteredMuseums();
   const winners=all.filter(m=>m.status==="winner").length;
   const list=all.length?all.map(m=>

@@ -25,11 +25,9 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 h1,h2,h3{margin:0;letter-spacing:-.02em}
 .wrap{width:min(1320px,calc(100% - 48px));margin-inline:auto}
-/* карта и каталог: во всю ширину окна, отступ 20px по краям */
+ 
 .map-section>.wrap,.catalog>.wrap{width:100%;max-width:none;margin-inline:0;padding:0 20px}
 
-
-/* ---------- header ---------- */
 .site-header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .header-inner{display:flex;align-items:center;gap:18px;height:72px}
@@ -62,7 +60,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .nav-drawer a{display:block;padding:14px 24px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line-2)}
 .nav-drawer a:last-child{border-bottom:0}
 
-/* ---------- hero ---------- */
 .hero{position:relative;color:#fff;overflow:hidden;
   background-color:#12233b;
   background-image:var(--hero-img);
@@ -92,7 +89,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
   border:1px solid rgba(255,255,255,.34);color:#fff;font-weight:600;transition:background .2s}
 .btn-ghost-light:hover{background:rgba(255,255,255,.1)}
 
-/* ---------- map ---------- */
 .map-section{background:var(--bg);padding:34px 0 8px}
 .map-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);
   border:1px solid var(--line);overflow:hidden}
@@ -134,7 +130,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .map-tip b{font-weight:700}
 .map-tip span{color:rgba(255,255,255,.65)}
 
-/* ---------- catalog ---------- */
 .catalog{background:var(--bg);padding:26px 0 70px}
 .catalog-inner{display:grid;grid-template-columns:360px minmax(0,1fr);gap:26px;align-items:start}
 .sidebar{position:sticky;top:96px;display:flex;flex-direction:column;gap:18px}
@@ -146,7 +141,7 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .search::placeholder{color:var(--muted-2)}
 .search:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(19,16,208,.1)}
 .region-list{margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:342px;
-  overflow-y:auto;overflow-x:hidden;   /* без overflow-x браузер рисует горизонтальную полосу */
+  overflow-y:auto;overflow-x:hidden;    
   padding-right:6px;scrollbar-width:thin}
 .region-list::-webkit-scrollbar{width:8px;height:0}
 .region-list::-webkit-scrollbar-thumb{background:#dcdde5;border-radius:8px}
@@ -171,7 +166,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .status-name{flex:1;font-size:14.5px}
 .status-row .count{font-size:13px;color:var(--muted);font-weight:600}
 
-/* ---------- просмотр фотографий ---------- */
 .photo{padding:0;border:0;cursor:zoom-in;overflow:hidden}
 .photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}
 .photo:hover img{transform:scale(1.05)}
@@ -206,12 +200,11 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .lb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.32);cursor:pointer;padding:0}
 .lb-dot.on{background:#fff;width:22px;border-radius:4px}
 
-/* ---------- content ---------- */
 .content{display:flex;flex-direction:column;gap:22px;min-width:0}
-/* порядок блоков: заголовок региона → описание музеев → карточка с картинками → видео */
+ 
 .content>.region-head{order:0}
-.content>#regionSummary{order:1}   /* блок с описанием музеев */
-.content>#museumCard{order:2}     /* карточка с миниатюрами */
+.content>#regionSummary{order:1}    
+.content>#museumCard{order:2}      
 .content>#how{order:3}
 .region-head{padding:2px 4px 0}
 .badge{display:inline-flex;align-items:center;height:30px;padding:0 13px;border-radius:999px;font-size:13px;
@@ -238,21 +231,21 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .btn-outline:hover{background:var(--bg)}
 .museum-about{margin:22px 0 0;color:var(--ink-2);font-size:15.5px;line-height:1.6}
 .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:20px}
-/* свёрнуто: одна полоска-карусель, прокрутка колёсиком, зациклена */
+ 
 .photos.carousel{display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;
   max-height:104px;scroll-behavior:auto;scrollbar-width:none;-ms-overflow-style:none}
 .photos.carousel::-webkit-scrollbar{height:0;width:0}
 .photos.carousel .photo{flex:0 0 auto;scroll-snap-align:none}
-/* раскрыто: обычная сетка всех фото, карусель выключена */
+ 
 .photos.expanded{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
   max-height:none!important;overflow:visible}
 .photos-wrap{position:relative;margin-bottom:58px}
-/* мягкий край у нижней строки — видно, что список продолжается */
+ 
 .photos-fade{display:none;position:absolute;left:0;right:0;bottom:0;height:44px;pointer-events:none;z-index:1;
   background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.92) 70%,#fff);
   opacity:0;transition:opacity .2s}
 .photos-fade.on{opacity:1}
-/* кнопка сидит по центру ровно на границе обрезки */
+ 
 .more-btn{position:absolute;left:50%;bottom:-50px;transform:translateX(-50%);z-index:3;
   display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 22px;
   border-radius:999px;border:1px solid var(--line);background:#fff;font-size:14px;font-weight:600;
@@ -286,7 +279,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .museum-item span{font-size:13.5px;color:var(--muted)}
 .empty{padding:26px;text-align:center;color:var(--muted);font-size:15px;background:var(--bg);border-radius:16px}
 
-/* ---------- how it works ---------- */
 .section-title{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
   font-weight:700;margin:0 0 16px}
 .how{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
@@ -306,7 +298,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .video-error{margin:14px 0 0;font-size:13.5px;color:#b4331f;display:none}
 .video-error.show{display:block}
 
-/* ---------- footer ---------- */
 .site-footer{background:var(--navy-deep);color:rgba(255,255,255,.72);padding:44px 0 34px}
 .footer-top{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}
 .footer-logo{color:#fff}
@@ -317,7 +308,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
 .footer-bottom{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);
   font-size:13px;color:rgba(255,255,255,.5);display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
 
-/* ---------- toast ---------- */
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,24px);background:var(--ink);color:#fff;
   padding:13px 20px;border-radius:14px;font-size:14px;box-shadow:0 20px 40px -22px rgba(0,0,0,.8);
   opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:90;max-width:90vw}
@@ -373,8 +363,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
     <a href="#" id="loginBtnMobile">Войти</a>
   </div>
 </header>
-
-
 
 <section class="hero" role="img" aria-label="Музейные экспонаты: античный храм, микроскоп, перо и стопка бумаги">
   <div class="wrap hero-inner">
@@ -530,7 +518,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
         <div class="status-list" id="statusList"></div>
       </section>
 
-      
     </aside>
 
     <main class="content">
@@ -610,7 +597,6 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
   <div class="lb-dots" id="lb-dots"></div>
 </div>
 
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -625,18 +611,17 @@ const STATUS_META = {
   none:        {label:"Без статуса",     color:"var(--st-none)",        hex:"#c6c9d3"}
 };
 const STATUS_ORDER = ["winner","finalist","semifinalist","none"];
-const PIN_ACTIVE = "#E11B22";   // выбранный пин — красный
-const PHOTOS_PER_MUSEUM = 12;  // сколько фото у музея (для сетки и кнопки «Ещё»)
+const PIN_ACTIVE = "#E11B22";   
+const PHOTOS_PER_MUSEUM = 12;  
 
 const state = {
-  region: "",                /* по умолчанию никакой регион не выбран */
+  region: "",                 
   statuses: new Set(),
   query: "",
   museumId: null,
   zoom: 1, tx: 0, ty: 0
 };
 
-/* ---------- проекция (равновеликая коническая Альберса) ---------- */
 const P1=52*Math.PI/180, P2=64*Math.PI/180, PHI0=55*Math.PI/180, LON0=100*Math.PI/180;
 const N=(Math.sin(P1)+Math.sin(P2))/2, C=Math.cos(P1)**2+2*N*Math.sin(P1);
 const RHO0=Math.sqrt(C-2*N*Math.sin(PHI0))/N;
@@ -655,7 +640,6 @@ function toView(lon,lat){
   return [ (p[0]-PROJ.minx)*PROJ.scale+PROJ.pad, (PROJ.maxy-p[1])*PROJ.scale+PROJ.pad ];
 }
 
-/* ---------- утилиты ---------- */
 const $ = (s,r=document)=>r.querySelector(s);
 const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 const fmt = n => n.toLocaleString("ru-RU").replace(/ /g," ");
@@ -726,7 +710,6 @@ function renderStatusList(){
     });
   });
 }
-
 
 /* ---------- карта ---------- */
 const svg=$("#map"), inner=$("#mapInner"), markersG=$("#markers"), tip=$("#mapTip"), viewport=$("#mapViewport");
@@ -887,7 +870,6 @@ document.addEventListener("keydown",e=>{
     else if(!e.shiftKey&&document.activeElement===lastF){ e.preventDefault(); first.focus(); }
   }
 });
-
 
 function applyTransform(){
   inner.setAttribute("transform",

@@ -992,19 +992,19 @@ function selectRegion(name){
   scrollPageToMap();
 }
 
-/* при выборе региона плавно прокручиваем страницу так,
-   чтобы низ стики-хедера совпал с низом баннера (баннер полностью ушёл) */
+/* при выборе региона плавно прокручиваем к границе с каталогом:
+   верх каталога оказывается у низа стики-хедера.
+   Если пользователь уже у каталога или ниже — не дёргаем. */
 function scrollPageToMap(){
   const header=$(".site-header");
-  const hero=$(".hero");
-  if(!hero || !header) return;
+  const catalog=$(".catalog");
+  if(!catalog || !header) return;
   const headerH = header.offsetHeight || 0;
-  const heroBottomY = hero.getBoundingClientRect().bottom + window.scrollY;
-  const top = Math.max(0, heroBottomY - headerH);   /* низ хедера встанет на низ баннера */
+  const catalogTopY = catalog.getBoundingClientRect().top + window.scrollY;
+  const top = Math.max(0, catalogTopY - headerH);   /* низ хедера = верх каталога */
   const cur = window.scrollY;
-  /* прокручиваем только когда разница ощутимая
-     (прыжок к началу или вниз к карточке из глубины страницы) */
-  if (Math.abs(cur - top) > 80) window.scrollTo({top, behavior:"smooth"});
+  /* прокручиваем только когда мы выше каталога (баннер или карта в зоне видимости) */
+  if (cur < top - 80) window.scrollTo({top, behavior:"smooth"});
 }
 
 /* прокручиваем только сам список регионов, не страницу */

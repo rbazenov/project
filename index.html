@@ -629,7 +629,7 @@ const PIN_ACTIVE = "#E11B22";   // выбранный пин — красный
 const PHOTOS_PER_MUSEUM = 12;  // сколько фото у музея (для сетки и кнопки «Ещё»)
 
 const state = {
-  region: "Иркутская область",
+  region: "",                /* по умолчанию никакой регион не выбран */
   statuses: new Set(),
   query: "",
   museumId: null,
@@ -1181,8 +1181,9 @@ renderLegend();
 renderRegionList();
 renderStatusList();
 renderMapRegions();
-selectRegion("Иркутская область");
-applyTransform();
+renderHead();
+renderSummary();
+applyTransform();   /* по умолчанию — никакой регион не выбран */
 </script>
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4dde67a2a9af11b',t:'MTc5MjU2MDk0MQ=='};";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 

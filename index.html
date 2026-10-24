@@ -336,19 +336,49 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
  .marker.active circle.ring{transform-origin:center;transform-box:fill-box;animation:pulseRing 1.6s ease-out infinite}
  .marker.active{padding:2px}
  .marker{transform-origin:center;transform-box:fill-box;transition:opacity .25s}.lb-dot{transition:background .2s,width .25s,border-radius .25s}</style>
+
+<!-- ============================================================
+     АНАЛИТИКА — Яндекс.Метрика
+     ------------------------------------------------------------
+     Номер счётчика задаётся один раз в window.YM_ID.
+     Если номер меняется, замените его здесь и в <noscript>-пикселе.
+     Все действия пользователя отправляются как цели (reachGoal)
+     через window.portalAnalytics — см. блок «АНАЛИТИКА» в основном
+     скрипте ниже. Отладка: откройте страницу с ?analytics=debug —
+     события будут выводиться в консоль.
+     ============================================================ -->
+<script>
+window.YM_ID = 113767864;
+(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+  m[i].l=1*new Date();
+  for (var j=0;j<document.scripts.length;j++){ if(document.scripts[j].src===r){ return; } }
+  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+  (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+ym(window.YM_ID, "init", {
+  clickmap:true,            // карта кликов в отчётах Метрики
+  trackLinks:true,          // переходы по внешним ссылкам и файлам
+  accurateTrackBounce:true, // точный показатель отказов
+  webvisor:true,            // Вебвизор: запись всех действий на странице
+  trackHash:true,           // переходы по якорям/секциям
+  triggerEvent:true         // поддержка событий из HTML-атрибутов
+});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/113767864"
+  style="position:absolute;left:-9999px" alt=""></div></noscript>
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="logo" href="#" aria-label="Знание">
+    <a class="logo" href="#" aria-label="Знание" data-track="header_logo">
       <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
         <path d="M3 6h26L18 18v8l-4 3V18L3 6Z" fill="currentColor"/>
       </svg>
       <span class="logo-text">Знание</span>
     </a>
     <span class="header-divider"></span>
-    <button class="location" type="button">
+    <button class="location" type="button" data-track="header_city">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
         <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" stroke-linejoin="round"/>
         <circle cx="12" cy="10" r="2.6"/>
@@ -356,14 +386,14 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
       Москва
     </button>
     <nav class="header-nav">
-      <a class="nav-link" href="#how">Мероприятия</a>
+      <a class="nav-link" href="#how" data-track="header_nav_how">Мероприятия</a>
       <a class="btn-login" href="#" id="loginBtn">Войти</a>
       <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span></button>
     </nav>
   </div>
   <div class="nav-drawer" id="navDrawer">
-    <a href="#catalog">Регионы и музеи</a>
-    <a href="#how">Мероприятия</a>
+    <a href="#catalog" data-track="mobile_nav_catalog">Регионы и музеи</a>
+    <a href="#how" data-track="mobile_nav_how">Мероприятия</a>
     <a href="#" id="loginBtnMobile">Войти</a>
   </div>
 </header>
@@ -384,12 +414,12 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
       <p>Выберите регион в списке или на карте — под картой появятся его школьные музеи,
          а по клику на музей откроется его карточка.</p>
       <div class="hero-actions">
-        <a class="btn-light" href="#catalog">
+        <a class="btn-light" href="#catalog" data-track="hero_cta_catalog">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
           К музеям
         </a>
-        <a class="btn-ghost-light" href="#how">Как проходит конкурс</a>
+        <a class="btn-ghost-light" href="#how" data-track="hero_cta_how">Как проходит конкурс</a>
       </div>
     </div>
   </div>
@@ -553,7 +583,7 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
   <div class="wrap">
     <div class="footer-top">
       <div>
-        <a class="logo footer-logo" href="#">
+        <a class="logo footer-logo" href="#" data-track="footer_logo">
           <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <path d="M3 6h26L18 18v8l-4 3V18L3 6Z" fill="currentColor"/>
           </svg>
@@ -565,20 +595,20 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
       <div class="footer-cols">
         <div class="footer-col">
           <h4>Портал</h4>
-          <a href="#catalog">Регионы</a>
-          <a href="#map-section">Карта музеев</a>
-          <a href="#how">Как проходит конкурс</a>
+          <a href="#catalog" data-track="footer_catalog">Регионы</a>
+          <a href="#map-section" data-track="footer_map">Карта музеев</a>
+          <a href="#how" data-track="footer_how">Как проходит конкурс</a>
         </div>
         <div class="footer-col">
           <h4>Участникам</h4>
-          <a href="#">Регламент</a>
-          <a href="#">Практика музеев</a>
-          <a href="#">Мероприятия</a>
+          <a href="#" data-track="footer_rules">Регламент</a>
+          <a href="#" data-track="footer_practice">Практика музеев</a>
+          <a href="#" data-track="footer_events">Мероприятия</a>
         </div>
         <div class="footer-col">
           <h4>Контакты</h4>
-          <a href="mailto:[email protected]">[email protected]</a>
-          <a href="#">Москва</a>
+          <a href="mailto:[email protected]" data-track="footer_email">[email protected]</a>
+          <a href="#" data-track="footer_city">Москва</a>
         </div>
       </div>
     </div>
@@ -655,6 +685,177 @@ function toast(msg){
   clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2600);
 }
 
+/* ============================================================
+   АНАЛИТИКА (Яндекс.Метрика)
+   ------------------------------------------------------------
+   Каждое действие пользователя отправляется отдельной целью:
+     portalAnalytics.reach("имя_цели", {параметры})
+   Имена целей нужно один раз создать в интерфейсе Метрики
+   (Настройки → Цели → событие JavaScript), иначе они не попадут
+   в отчёт по целям. Список имён — в README.md.
+
+   Отладка: ?analytics=debug — все события пишутся в консоль и в
+   window.__analyticsLog. Аналитика никогда не ломает интерфейс:
+   любые ошибки (блокировщики, офлайн, file://) глушатся.
+   ============================================================ */
+const portalAnalytics = (function(){
+  const ID = Number(window.YM_ID) || 0;
+  const debug = /(^|[?&])analytics=debug(&|$)/.test(location.search);
+  const log = (window.__analyticsLog = window.__analyticsLog || []);
+  const stats = {clicks:0, events:0, maxScroll:0, startedAt:Date.now(), sections:{}};
+  const fired = new Set();          // события, которые шлём один раз за сессию
+  let searchTimer = 0, wheelTimer = 0;
+
+  function now(){ return Date.now(); }
+
+  function reach(goal, params){
+    if(!goal) return null;
+    const data = Object.assign({
+      page: location.pathname + location.hash,
+      ts: now()
+    }, params || {});
+    try{
+      if(log.length > 400) log.shift();
+      log.push({goal, data});
+      stats.events++;
+      if(debug) console.info("[analytics]", goal, data);
+      if(ID && typeof window.ym === "function") window.ym(ID, "reachGoal", goal, data);
+    }catch(e){ /* молча: аналитика не должна мешать странице */ }
+    return data;
+  }
+
+  /* событие, которое должно уйти только один раз */
+  function once(goal, params){
+    if(fired.has(goal)) return;
+    fired.add(goal);
+    reach(goal, params);
+  }
+
+  /* пометить клик как уже обработанный, чтобы общий обработчик не дублировал */
+  function mark(ev){ try{ if(ev && typeof ev === "object") ev.__tracked = true; }catch(e){} }
+
+  function section(id, label){
+    return reach("section_view", {section:id, label:label||id});
+  }
+
+  /* ---- сводка по сессии: время, прокрутка, число кликов и событий ---- */
+  let lastSummary = 0;
+  function summary(force){
+    /* при переключении вкладок не шлём чаще, чем раз в 30 секунд */
+    if(!force && now() - lastSummary < 30000) return null;
+    lastSummary = now();
+    const seconds = Math.round((now() - stats.startedAt) / 1000);
+    return reach("session_summary", {
+      seconds: seconds,
+      clicks: stats.clicks,
+      events: stats.events,
+      max_scroll: stats.maxScroll,
+      sections_seen: Object.keys(stats.sections).join(",")
+    });
+  }
+
+  /* ---- прокрутка страницы: 25 / 50 / 75 / 100 % ---- */
+  let scrollTick = false;
+  function onScroll(){
+    if(scrollTick) return;
+    scrollTick = true;
+    requestAnimationFrame(()=>{
+      scrollTick = false;
+      const doc = document.documentElement;
+      const height = Math.max(1, doc.scrollHeight - window.innerHeight);
+      const pct = Math.min(100, Math.max(0, Math.round(window.scrollY / height * 100)));
+      if(pct > stats.maxScroll) stats.maxScroll = pct;
+      [25,50,75,100].forEach(markPct=>{
+        if(pct >= markPct) once("scroll_"+markPct, {depth:markPct});
+      });
+    });
+  }
+
+  /* ---- какие блоки страницы реально увидели ---- */
+  function watchSections(){
+    const ids = ["hero","map-section","catalog","how","site-footer"];
+    if(!("IntersectionObserver" in window)) return;   // старые браузеры: просто без section_view
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(en=>{
+        if(!en.isIntersecting) return;
+        const el = en.target;
+        const key = el.id || el.className.split(" ")[0] || "section";
+        if(stats.sections[key]) { io.unobserve(el); return; }
+        stats.sections[key] = 1;
+        const label = (el.dataset.sectionLabel || (el.querySelector("h1,h2,h3")||{}).textContent || key)
+          .replace(/\s+/g," ").trim().slice(0,60);
+        section(key, label);
+        io.unobserve(el);
+      });
+    }, {threshold:0.35});
+    ids.forEach(id=>{
+      const el = document.getElementById(id) || document.querySelector("."+id);
+      if(el) io.observe(el);
+    });
+  }
+
+  /* ---- общий перехват кликов: всё, что не размечено отдельно ---- */
+  function watchClicks(){
+    /* счётчик всех кликов — в фазе перехвата, чтобы поймать и те,
+       где обработчик карты отменяет всплытие */
+    document.addEventListener("click", ()=>{ stats.clicks++; }, true);
+    /* общая цель для элементов без собственного события — в фазе всплытия,
+       чтобы частные обработчики успели пометить клик как обработанный */
+    document.addEventListener("click", e=>{
+      if(e.__tracked) return;
+      const el = e.target.closest("a,button,[role=button],summary");
+      if(!el) return;
+      const explicit = el.dataset.track || "";
+      const text = (explicit || el.getAttribute("aria-label") || el.textContent || "")
+        .replace(/\s+/g," ").trim().slice(0,80);
+      reach(explicit ? "cta_click" : "ui_click", {
+        label: text || el.tagName.toLowerCase(),
+        tag: el.tagName.toLowerCase(),
+        id: el.id || "",
+        cls: (el.className && el.className.baseVal !== undefined ? el.className.baseVal : el.className || "").toString().split(" ").slice(0,3).join("."),
+        href: el.getAttribute && el.getAttribute("href") || ""
+      });
+    });
+  }
+
+  function start(){
+    try{
+      watchClicks();
+      watchSections();
+      window.addEventListener("scroll", onScroll, {passive:true});
+      onScroll();
+      window.addEventListener("pagehide", ()=>summary(true));
+      document.addEventListener("visibilitychange", ()=>{
+        if(document.visibilityState === "hidden") summary(false);
+      });
+      reach("page_ready", {
+        title: document.title,
+        viewport: window.innerWidth + "x" + window.innerHeight,
+        referrer: document.referrer || "direct"
+      });
+    }catch(e){}
+  }
+
+  return {
+    reach, once, mark, start, summary, stats,
+    get log(){ return log; },
+    /* поиск: шлём не на каждую букву, а через 900 мс после ввода */
+    search(query, results){
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(()=>{
+        reach("search_region", {query: String(query||"").slice(0,60), results: results});
+      }, 900);
+    },
+    /* зум карты колесом: одно событие на серию прокруток */
+    wheelZoom(level){
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(()=>reach("map_zoom", {action:"wheel", level:+level.toFixed(2)}), 700);
+    }
+  };
+})();
+/* доступ для отладки из консоли: portalAnalytics.log */
+window.portalAnalytics = portalAnalytics;
+
 /* ---------- данные ---------- */
 const regions = DATA.regions;
 const museums = DATA.museums;
@@ -678,8 +879,11 @@ function renderLegend(){
       '<i class="legend-dot" style="background:'+s.hex+'"></i>'+s.label+'</span>';
   }).join("");
   $$("#legend .legend-item").forEach(el=>{
-    el.addEventListener("click",()=>{
+    el.addEventListener("click",ev=>{
       const k=el.dataset.status;
+      const on=!state.statuses.has(k);
+      portalAnalytics.mark(ev);
+      portalAnalytics.reach("filter_status", {status:k, action:on?"on":"off", place:"legend"});
       state.statuses.has(k)?state.statuses.delete(k):state.statuses.add(k);
       renderLegend(); renderStatusList(); renderMarkers(); renderSummary();
     });
@@ -695,7 +899,7 @@ function renderRegionList(){
       '<span class="name">'+esc(r.name)+'</span><span class="count">'+r.count+'</span></button>').join("")
     : '<div class="empty" style="grid-column:1/-1">Ничего не найдено</div>';
   $$("#regionList .region-chip").forEach(el=>{
-    el.addEventListener("click",()=>selectRegion(el.dataset.region));
+    el.addEventListener("click",ev=>{ portalAnalytics.mark(ev); selectRegion(el.dataset.region,"list"); });
   });
   fade($("#regionList"));
 }
@@ -711,6 +915,9 @@ function renderStatusList(){
   }).join("");
   $$("#statusList input").forEach(cb=>{
     cb.addEventListener("change",()=>{
+      portalAnalytics.reach("filter_status", {
+        status: cb.dataset.status, action: cb.checked?"on":"off", place:"sidebar"
+      });
       cb.checked?state.statuses.add(cb.dataset.status):state.statuses.delete(cb.dataset.status);
       renderLegend(); renderMarkers(); renderSummary();
     });
@@ -827,7 +1034,11 @@ function toggleCardPhotos(){
 const lb=$("#lb"), lbImg=$("#lb-img"), lbName=$("#lb-name"), lbCount=$("#lb-count"), lbDots=$("#lb-dots");
 let lbList=[], lbIdx=0, lbLast=null;
 
-function openLightbox(m,i){
+function openLightbox(m,i,source){
+  portalAnalytics.reach("photo_open", {
+    museum_id: m.id, museum: m.name, region: m.region,
+    photo: i+1, total: PHOTOS_PER_MUSEUM, source: source || "card"
+  });
   lbList=m; lbIdx=Math.max(0,Math.min(i,PHOTOS_PER_MUSEUM-1));
   lbLast=document.activeElement;
   lbName.textContent=m.name;
@@ -850,17 +1061,37 @@ function paintLightbox(){
       '<button class="lb-dot'+(k===lbIdx?" on":"")+'" type="button" data-i="'+k+'" aria-label="Фото '+(k+1)+'"></button>').join("");
   } else lbDots.innerHTML="";
 }
-function stepLightbox(d){ if(lbList.photos>1) lbIdx=(lbIdx+d+lbList.photos)%lbList.photos; paintLightbox(); }
+function stepLightbox(d){
+  if(lbList.photos>1) lbIdx=(lbIdx+d+lbList.photos)%lbList.photos;
+  if(d) portalAnalytics.reach("photo_switch", {
+    museum: lbList.name, direction: d>0?"next":"prev", photo: lbIdx+1
+  });
+  paintLightbox();
+}
 function closeLightbox(){
+  if(lb.classList.contains("open")) portalAnalytics.reach("photo_close", {
+    museum: lbList.name, photo: lbIdx+1
+  });
   lb.classList.remove("open"); lb.hidden=true; document.body.style.overflow="";
   if(lbLast&&lbLast.focus) lbLast.focus();
 }
 
 lb.addEventListener("click",e=>{
   const b=e.target.closest("[data-lb]");
-  if(b){ const a=b.dataset.lb; if(a==="close") closeLightbox(); else if(a==="prev") stepLightbox(-1); else if(a==="next") stepLightbox(1); return; }
+  if(b){
+    const a=b.dataset.lb;
+    portalAnalytics.mark(e);
+    if(a==="close") closeLightbox();
+    else if(a==="prev") stepLightbox(-1);
+    else if(a==="next") stepLightbox(1);
+    return;
+  }
   const d=e.target.closest(".lb-dot");
-  if(d){ lbIdx=+d.dataset.i; paintLightbox(); return; }
+  if(d){
+    lbIdx=+d.dataset.i; paintLightbox();
+    portalAnalytics.reach("photo_switch", {museum:lbList.name, direction:"dot", photo:lbIdx+1});
+    return;
+  }
   if(e.target===lbImg||e.target.classList.contains("lb-frame")) stepLightbox(1);
 });
 document.addEventListener("keydown",e=>{
@@ -898,7 +1129,8 @@ function renderMarkers(){
   }).join("");
   markersG.innerHTML=html;
   $$("#markers .marker").forEach(g=>{
-    g.addEventListener("click",ev=>{ if(justDragged) return; ev.stopPropagation(); selectMuseum(g.dataset.id); });
+    g.addEventListener("click",ev=>{ if(justDragged) return; ev.stopPropagation();
+      portalAnalytics.mark(ev); selectMuseum(g.dataset.id,"map"); });
   });
 }
 
@@ -910,7 +1142,8 @@ function renderMapRegions(){
     const pass=!state.statuses.size||list.some(m=>state.statuses.has(m.status));
     p.classList.toggle("active", name===state.region);
     p.classList.toggle("dim", !pass);
-    p.addEventListener("click",()=>{ if(justDragged) return; if(r) selectRegion(name); });
+    p.addEventListener("click",ev=>{ if(justDragged) return; if(!r) return;
+      portalAnalytics.mark(ev); selectRegion(name,"map"); });
     p.addEventListener("mousemove",ev=>{
       if(!r) return;
       const rect=viewport.getBoundingClientRect();
@@ -923,7 +1156,7 @@ function renderMapRegions(){
   });
 }
 
-function zoomBy(factor,cx,cy){
+function zoomBy(factor,cx,cy,action){
   const k=Math.min(4,Math.max(1,state.zoom*factor));
   const ratio=k/state.zoom;
   const px=cx===undefined? MAP_W/2 : cx;
@@ -933,11 +1166,16 @@ function zoomBy(factor,cx,cy){
   state.zoom=k;
   if(k===1){ state.tx=0; state.ty=0; }
   applyTransform();
+  if(action) portalAnalytics.reach("map_zoom", {action:action, level:+k.toFixed(2)});
 }
 
-$("#zoomIn").addEventListener("click",()=>zoomBy(1.35));
-$("#zoomOut").addEventListener("click",()=>zoomBy(1/1.35));
-$("#zoomReset").addEventListener("click",()=>{ state.zoom=1;state.tx=0;state.ty=0; applyTransform(); });
+$("#zoomIn").addEventListener("click",ev=>{ portalAnalytics.mark(ev); zoomBy(1.35,undefined,undefined,"zoom_in"); });
+$("#zoomOut").addEventListener("click",ev=>{ portalAnalytics.mark(ev); zoomBy(1/1.35,undefined,undefined,"zoom_out"); });
+$("#zoomReset").addEventListener("click",ev=>{
+  portalAnalytics.mark(ev);
+  state.zoom=1;state.tx=0;state.ty=0; applyTransform();
+  portalAnalytics.reach("map_zoom", {action:"reset", level:1});
+});
 
 let dragging=false, moved=false, last=null, justDragged=false;
 /* setPointerCapture здесь нельзя: он перенаправляет click на сам svg,
@@ -962,19 +1200,33 @@ window.addEventListener("pointerup",()=>{
   if(!dragging) return;
   dragging=false; svg.classList.remove("dragging");
   justDragged=moved;
+  if(moved) portalAnalytics.reach("map_drag", {zoom:+state.zoom.toFixed(2)});
   setTimeout(()=>{ justDragged=false; },0);
 });
 svg.addEventListener("wheel",e=>{
   e.preventDefault();
   const rect=svg.getBoundingClientRect();
   zoomBy(e.deltaY<0?1.12:1/1.12, (e.clientX-rect.left)/rect.width*MAP_W, (e.clientY-rect.top)/rect.height*MAP_H);
+  portalAnalytics.wheelZoom(state.zoom);
 },{passive:false});
 
 /* ---------- выбор региона ---------- */
-function selectRegion(name){
+function selectRegion(name, source){
+  const r = regionByName[name];
+  portalAnalytics.reach("region_select", {
+    region: name,
+    source: source || "other",
+    museums: r ? r.count : 0,
+    okrug: r ? r.okrug : ""
+  });
   state.region=name;
   const list=filteredMuseums();
   state.museumId = list.length ? list[0].id : null;
+  if(list.length) portalAnalytics.reach("museum_open", {
+    museum_id: list[0].id, museum: list[0].name,
+    region: list[0].region, status: list[0].status,
+    source: "auto_after_region"
+  });
   renderRegionList(); renderMapRegions(); renderMarkers(); renderHead(); renderMuseumCard(); renderSummary();
   scrollChipIntoList();
   scrollPageToMap();
@@ -1053,20 +1305,34 @@ function renderMuseumCard(){
       '<div><div class="stat-num">'+fmt(m.exhibits)+'</div><div class="stat-label">экспонатов</div></div>'+
       '<div><div class="stat-num">'+fmt(m.visitors)+'</div><div class="stat-label">посетителей в год</div></div>'+
     '</div>';
-  $("#closeMuseum").addEventListener("click",()=>{ state.museumId=null; renderMuseumCard(); renderMarkers(); renderSummary(); });
-  $("#practiceBtn").addEventListener("click",()=>downloadChecklist(m));
-  $$("#museumCard .photo").forEach(btn=>btn.addEventListener("click",()=>openLightbox(m,+btn.dataset.photo)));
+  $("#closeMuseum").addEventListener("click",ev=>{
+    portalAnalytics.mark(ev);
+    portalAnalytics.reach("museum_close", {museum_id:m.id, museum:m.name, region:m.region});
+    state.museumId=null; renderMuseumCard(); renderMarkers(); renderSummary();
+  });
+  $("#practiceBtn").addEventListener("click",ev=>{ portalAnalytics.mark(ev); downloadChecklist(m); });
+  $$("#museumCard .photo").forEach(btn=>btn.addEventListener("click",ev=>{
+    portalAnalytics.mark(ev); openLightbox(m,+btn.dataset.photo,"card");
+  }));
   photosExpanded=false;
   layoutCardPhotos();
   const more=document.getElementById("photosMore");
-  if(more) more.addEventListener("click",toggleCardPhotos);
+  if(more) more.addEventListener("click",ev=>{
+    portalAnalytics.mark(ev);
+    portalAnalytics.reach("photos_toggle", {museum_id:m.id, museum:m.name, action: photosExpanded?"collapse":"expand"});
+    toggleCardPhotos();
+  });
   const g=document.getElementById("cardPhotos");
   if(g){ g.addEventListener("wheel",onPhotosWheel,{passive:false}); g.addEventListener("scroll",()=>{ if(!photosExpanded && g.scrollLeft<2) g.scrollLeft=0; },{passive:true}); }
 }
 
-function selectMuseum(id){
+function selectMuseum(id, source){
   const m=museums.find(x=>x.id===id);
   if(!m) return;
+  portalAnalytics.reach("museum_open", {
+    museum_id: m.id, museum: m.name, region: m.region, status: m.status,
+    source: source || "other"
+  });
   if(m.region!==state.region){
     state.region=m.region;
     renderRegionList(); renderMapRegions(); renderHead();
@@ -1099,9 +1365,13 @@ function renderSummary(){
     '<button class="btn-hide" id="hideSummary" type="button">Скрыть</button>'+
     '<div class="museum-list">'+list+'</div>';
   $$("#regionSummary .museum-item").forEach(el=>{
-    el.addEventListener("click",()=>selectMuseum(el.dataset.id));
+    el.addEventListener("click",ev=>{ portalAnalytics.mark(ev); selectMuseum(el.dataset.id,"summary"); });
   });
-  $("#hideSummary").addEventListener("click",()=>{ box.hidden=true; });
+  $("#hideSummary").addEventListener("click",ev=>{
+    portalAnalytics.mark(ev);
+    portalAnalytics.reach("summary_hide", {region:state.region});
+    box.hidden=true;
+  });
 }
 
 function plural(n, forms){
@@ -1136,25 +1406,40 @@ function downloadChecklist(m){
   a.href=URL.createObjectURL(blob);
   a.download="practice-"+(m.name.replace(/[^\wа-яА-ЯёЁ]+/g,"-").slice(0,50))+".txt";
   document.body.appendChild(a); a.click(); a.remove();
+  portalAnalytics.reach("checklist_download", {museum_id:m.id, museum:m.name, region:m.region});
   toast("Чек-лист «Практика музеев» скачан");
 }
 
 /* ---------- поиск и сброс ---------- */
-$("#regionSearch").addEventListener("input",e=>{ state.query=e.target.value; renderRegionList(); });
+$("#regionSearch").addEventListener("input",e=>{
+  state.query=e.target.value;
+  renderRegionList();
+  const q=state.query.trim().toLowerCase();
+  portalAnalytics.search(state.query, regions.filter(r=>!q||r.name.toLowerCase().includes(q)).length);
+});
 
 /* ---------- вход ---------- */
 ["#loginBtn","#loginBtnMobile"].forEach(sel=>{
   const el=$(sel);
-  if(el) el.addEventListener("click",e=>{ e.preventDefault(); toast("Вход в личный кабинет — демо-режим"); });
+  if(el) el.addEventListener("click",e=>{
+    e.preventDefault();
+    portalAnalytics.mark(e);
+    portalAnalytics.reach("login_click", {place: sel});
+    toast("Вход в личный кабинет — демо-режим");
+  });
 });
 
 /* ---------- меню ---------- */
 const burger=$("#burger"), drawer=$("#navDrawer");
-burger.addEventListener("click",()=>{
+burger.addEventListener("click",ev=>{
   const open=drawer.classList.toggle("open");
+  portalAnalytics.mark(ev);
+  portalAnalytics.reach("menu_toggle", {state: open?"open":"close"});
   burger.setAttribute("aria-expanded",open?"true":"false");
 });
-$$("#navDrawer a").forEach(a=>a.addEventListener("click",()=>{
+$$("#navDrawer a").forEach(a=>a.addEventListener("click",ev=>{
+  portalAnalytics.mark(ev);
+  portalAnalytics.reach("nav_click", {label: a.textContent.trim(), href: a.getAttribute("href")||""});
   drawer.classList.remove("open"); burger.setAttribute("aria-expanded","false");
 }));
 
@@ -1162,11 +1447,14 @@ $$("#navDrawer a").forEach(a=>a.addEventListener("click",()=>{
 function bindPlay(){
   const btn=$("#playBtn");
   if(!btn) return;
-  btn.addEventListener("click",()=>{
+  btn.addEventListener("click",ev=>{
+    portalAnalytics.mark(ev);
+    portalAnalytics.reach("video_play", {file:"museum-tour.mp4"});
     const stage=$("#videoStage");
     const v=document.createElement("video");
     v.controls=true; v.autoplay=true; v.playsInline=true; v.src="museum-tour.mp4";
     v.addEventListener("error",()=>{
+      portalAnalytics.reach("video_error", {file:"museum-tour.mp4"});
       $("#videoError").classList.add("show");
       stage.innerHTML='<button class="play-btn" id="playBtn" type="button" aria-label="Смотреть видео">'+
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg></button>';
@@ -1189,6 +1477,9 @@ renderMapRegions();
 renderHead();
 renderSummary();
 applyTransform();   /* по умолчанию — никакой регион не выбран */
+
+/* ---------- аналитика: запуск наблюдения ---------- */
+portalAnalytics.start();
 </script>
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4dde67a2a9af11b',t:'MTc5MjU2MDk0MQ=='};";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 

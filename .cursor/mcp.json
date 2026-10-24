@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "stormbpmn": {
+      "url": "https://stormbpmn.com/api/v1/mcp",
+      "headers": {
+        "Authorization": "Bearer ${STORM_API_KEY}"
+      }
+    }
+  }
+}

@@ -335,11 +335,34 @@ h1,h2,h3{margin:0;letter-spacing:-.02em}
   .map-tools{width:100%;margin-left:0}
   .zoom{margin-left:auto}
 }
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes pulseRing{0%{transform:scale(1);opacity:.6}80%{transform:scale(2.2);opacity:0}100%{transform:scale(2.2);opacity:0}}.fade-up{animation:fadeUp .32s ease both}.region-chip{transition:background .22s,color .22s,transform .14s}.marker.active circle.dot{transform-origin:center;transform-box:fill-box;animation:dotPulse 1.4s ease-in-out infinite alternate}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}@keyframes pulseRing{0%{transform:scale(1);opacity:.6}80%{transform:scale(2.2);opacity:0}100%{transform:scale(2.2);opacity:0}}.fade-up{animation:fadeUp .4s cubic-bezier(.22,.61,.36,1) both}.region-chip{transition:background .22s,color .22s,transform .14s}.marker.active circle.dot{transform-origin:center;transform-box:fill-box;animation:dotPulse 1.4s ease-in-out infinite alternate}
  @keyframes dotPulse{from{r:9}to{r:11}}
  .marker.active circle.ring{transform-origin:center;transform-box:fill-box;animation:pulseRing 1.6s ease-out infinite}
  .marker.active{padding:2px}
- .marker{transform-origin:center;transform-box:fill-box;transition:opacity .25s}.lb-dot{transition:background .2s,width .25s,border-radius .25s}</style>
+ .marker{transform-origin:center;transform-box:fill-box;transition:opacity .25s}.lb-dot{transition:background .2s,width .25s,border-radius .25s}
+
+/* ---------- плавное переключение содержимого ----------
+   Старый блок мягко уходит вверх и гаснет, новый — проявляется снизу.
+   Длительности и кривые подобраны так, чтобы смена читалась как одно
+   непрерывное движение, а не как «мигание» перерисовки. */
+.switchable{transition:opacity .24s cubic-bezier(.22,.61,.36,1),
+                     transform .24s cubic-bezier(.22,.61,.36,1)}
+.switchable.switch-out{opacity:0;transform:translateY(-6px);
+  transition-duration:.11s;transition-timing-function:cubic-bezier(.4,0,1,1)}
+.switchable.switch-prep{transition:none;opacity:0;transform:translateY(9px)}
+
+/* кроссфейд кадра в лайтбоксе при перелистывании */
+.lb-frame img{transition:opacity .17s cubic-bezier(.22,.61,.36,1),transform .17s cubic-bezier(.22,.61,.36,1)}
+.lb-frame img.lb-img-out{opacity:0;transform:scale(.988)}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .fade-up{animation:none!important}
+  .switchable,.switchable.switch-out,.switchable.switch-prep{
+    transition:none!important;opacity:1!important;transform:none!important}
+  .lb-frame img{transition:none!important}
+  .lb-frame img.lb-img-out{opacity:1;transform:none}
+}</style>
 
 <!-- ============================================================
      АНАЛИТИКА — Яндекс.Метрика
@@ -558,7 +581,7 @@ ym(window.YM_ID, "init", {
     </aside>
 
     <main class="content">
-      <div class="region-head">
+      <div class="region-head" id="regionHead">
         <span class="badge badge-lavender" id="regionOkrug">—</span>
         <h2 id="regionTitle">Выберите регион</h2>
         <p class="region-sub" id="regionSub">Нажмите на регион в списке или на карте</p>
@@ -677,6 +700,49 @@ function toView(lon,lat){
 
 const $ = (s,r=document)=>r.querySelector(s);
   function fade(el){ if(!el) return; el.classList.remove("fade-up"); void el.offsetWidth; el.classList.add("fade-up"); };
+
+/* ---------- плавная смена содержимого ----------
+   withFade(el, mutate, skipOut):
+     1) старый контент гаснет и уезжает вверх (110 мс);
+     2) подменяем содержимое, пока блок невидим;
+     3) новый контент проявляется снизу (240 мс).
+   Повторный вызов во время анимации отменяет предыдущий (token),
+   поэтому быстрые клики по регионам не «дёргают» вёрстку.
+   skipOut — блок только что был скрыт: гасить нечего, сразу проявляем. */
+const FADE_OUT = 110, FADE_IN = 240;
+const reduceMotion = () =>
+  !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+const fadeTokens = new WeakMap();
+
+function withFade(el, mutate, skipOut){
+  if(!el){ mutate && mutate(); return; }
+  const apply = () => {
+    mutate && mutate();
+    el.classList.add("switch-prep");
+    void el.offsetWidth;              // фиксируем стартовое состояние
+    el.classList.remove("switch-prep");  // и плавно уходим к opacity:1
+  };
+  if(reduceMotion()){ apply(); el.classList.remove("switchable","switch-out","switch-prep"); return; }
+
+  el.classList.add("switchable");
+  const token = (fadeTokens.get(el) || 0) + 1;
+  fadeTokens.set(el, token);
+
+  clearTimeout(el._switchTimer);
+  if(skipOut){
+    apply();
+  } else {
+    el.classList.add("switch-out");
+    el._switchTimer = setTimeout(()=>{
+      if(fadeTokens.get(el) !== token) return;
+      apply();
+    }, FADE_OUT);
+  }
+  clearTimeout(el._switchClean);
+  el._switchClean = setTimeout(()=>{
+    if(fadeTokens.get(el) === token) el.classList.remove("switchable","switch-out","switch-prep");
+  }, FADE_OUT + FADE_IN + 80);
+}
 const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 const fmt = n => n.toLocaleString("ru-RU").replace(/ /g," ");
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -1017,18 +1083,26 @@ function onPhotosWheel(e){
 }
 
 function toggleCardPhotos(){
-  photosExpanded = !photosExpanded;
-  layoutCardPhotos();
-  if(photosExpanded){
-    // раскрыли: надёжно показываем шторку с кнопкой «Скрыть»
-    const b=document.getElementById("photosMore");
-    b.hidden=false;
-    b.querySelector(".lbl").textContent="Скрыть";
-    b.querySelector(".cnt").textContent="";
-    b.querySelector("svg").style.transform="rotate(180deg)";
-  } else {
-    wheelLock = 0;
-  }
+  /* раскрытие/сворачивание галереи меняет высоту — делаем это,
+     пока блок невидим, чтобы страница не «прыгала» */
+  const wrap=document.querySelector("#museumCard .photos-wrap");
+  const apply=()=>{
+    photosExpanded = !photosExpanded;
+    layoutCardPhotos();
+    if(photosExpanded){
+      // раскрыли: надёжно показываем шторку с кнопкой «Скрыть»
+      const b=document.getElementById("photosMore");
+      if(b){
+        b.hidden=false;
+        b.querySelector(".lbl").textContent="Скрыть";
+        b.querySelector(".cnt").textContent="";
+        b.querySelector("svg").style.transform="rotate(180deg)";
+      }
+    } else {
+      wheelLock = 0;
+    }
+  };
+  if(wrap) withFade(wrap, apply); else apply();
 }
 
 /* ---------- просмотр фото ---------- */
@@ -1043,14 +1117,34 @@ function openLightbox(m,i,source){
   lbList=m; lbIdx=Math.max(0,Math.min(i,PHOTOS_PER_MUSEUM-1));
   lbLast=document.activeElement;
   lbName.textContent=m.name;
-  paintLightbox();
+  paintLightbox(true);
   lb.hidden=false; lb.classList.add("open");
   document.body.style.overflow="hidden";
   lb.querySelector(".lb-close").focus();
 }
-function paintLightbox(){
+let lbSwapToken=0;
+/* смена кадра без «моргания»: старый снимок гаснет, новый проявляется */
+function setLightboxImage(src){
+  const token=++lbSwapToken;
+  if(reduceMotion()){ lbImg.classList.remove("lb-img-out"); lbImg.src=src; return; }
+  let done=false;
+  const swap=()=>{
+    if(done || token!==lbSwapToken) return;
+    done=true;
+    lbImg.src=src;
+    requestAnimationFrame(()=>{ if(token===lbSwapToken) lbImg.classList.remove("lb-img-out"); });
+  };
+  lbImg.classList.add("lb-img-out");
+  const pre=new Image();
+  pre.onload=pre.onerror=()=>setTimeout(swap,120);   // даём уходящему кадру погаснуть
+  pre.src=src;
+  setTimeout(swap,240);                              // страховка (кэш/без onload)
+}
+
+function paintLightbox(instant){
   const total=PHOTOS_PER_MUSEUM;
-  lbImg.src=photoSrc(lbList,lbIdx);
+  if(instant){ lbSwapToken++; lbImg.classList.remove("lb-img-out"); lbImg.src=photoSrc(lbList,lbIdx); }
+  else setLightboxImage(photoSrc(lbList,lbIdx));
   lbImg.alt=lbList.name+" — фото "+(lbIdx+1);
   lbCount.textContent=(lbIdx+1)+" / "+total;
   const many=total>1;
@@ -1260,21 +1354,34 @@ function scrollChipIntoList(){
 
 /* ---------- карточка музея ---------- */
 function renderHead(){
-  const r=regionByName[state.region];
-  if(!r){ $("#regionOkrug").textContent="—"; $("#regionTitle").textContent="Выберите регион";
-          $("#regionSub").textContent="Нажмите на регион в списке или на карте"; fade($("#regionOkrug")); fade($("#regionTitle")); fade($("#regionSub")); return; }
-  $("#regionOkrug").textContent=r.okrug;
-  $("#regionTitle").textContent=r.name;
-  $("#regionSub").textContent=r.okrugFull+" · "+r.count+" "+plural(r.count,["музей","музея","музеев"]);
-   fade($("#regionOkrug")); fade($("#regionTitle")); fade($("#regionSub"));
-  }
+  const head=$("#regionHead");
+  withFade(head, ()=>{
+    const r=regionByName[state.region];
+    if(!r){
+      $("#regionOkrug").textContent="—";
+      $("#regionTitle").textContent="Выберите регион";
+      $("#regionSub").textContent="Нажмите на регион в списке или на карте";
+      return;
+    }
+    $("#regionOkrug").textContent=r.okrug;
+    $("#regionTitle").textContent=r.name;
+    $("#regionSub").textContent=r.okrugFull+" · "+r.count+" "+plural(r.count,["музей","музея","музеев"]);
+  }, !state.region);
+}
 
 function renderMuseumCard(){
   const card=$("#museumCard");
   const m=state.museumId?museums.find(x=>x.id===state.museumId):null;
   if(!m){ card.hidden=true; card.innerHTML=""; return; }
+  const wasHidden=card.hidden;
+  card.hidden=false;
+  /* карточку перерисовываем внутри кроссфейда: старый музей гаснет,
+     новый появляется — переход между музеями читается плавно */
+  withFade(card, ()=>paintMuseumCard(card,m), wasHidden);
+}
+
+function paintMuseumCard(card,m){
   const s=STATUS_META[m.status];
-  card.hidden=false; fade(card);
   const photos=Array.from({length:PHOTOS_PER_MUSEUM},(_,i)=>
     '<button class="photo" type="button" data-photo="'+i+'" aria-label="Открыть фото '+(i+1)+'">'+
     '<img src="'+photoSrc(m,i)+'" alt="'+esc(m.name)+' — фото '+(i+1)+'" loading="lazy"></button>').join("");
@@ -1341,7 +1448,15 @@ function selectMuseum(id, source){
   state.museumId=id;
   renderMuseumCard(); renderMarkers(); renderSummary();
   const card=$("#museumCard");
-  if(card && !card.hidden) card.scrollIntoView({behavior:"smooth",block:"center"});
+  if(card && !card.hidden){
+    /* карточка перерисовывается внутри кроссфейда (110 мс), поэтому
+       прокручиваем уже к её новой высоте */
+    const jump=()=>{
+      if(card.hidden || typeof card.scrollIntoView!=="function") return;
+      card.scrollIntoView({behavior:"smooth",block:"center"});
+    };
+    if(reduceMotion()) jump(); else setTimeout(jump, FADE_OUT + 40);
+  }
 }
 
 /* ---------- сводка по региону ---------- */
@@ -1349,7 +1464,12 @@ function renderSummary(){
   const box=$("#regionSummary");
   const r=regionByName[state.region];
   if(!r){ box.hidden=true; return; }
-  box.hidden=false; fade(box);
+  const wasHidden=box.hidden;
+  box.hidden=false;
+  withFade(box, ()=>paintSummary(box,r), wasHidden);
+}
+
+function paintSummary(box,r){
   const all=filteredMuseums();
   const winners=all.filter(m=>m.status==="winner").length;
   const list=all.length?all.map(m=>
